@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -7,6 +8,15 @@ class Test(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class UserRightAnswer(models.Model):
+    right_answer = models.IntegerField(default=0)
+    date = models.DateTimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+
+
 class Question(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     active = models.BooleanField()
