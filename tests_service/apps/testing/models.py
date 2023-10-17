@@ -28,4 +28,3 @@ class Choice(models.Model):
     choice_text = models.TextField()
     right_answer = models.BooleanField()
 
-# Create your models here.
