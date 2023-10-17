@@ -10,3 +10,8 @@ def session_initialization(test_id: int, request: HttpRequest):
     request.session["questions_id"] \
         = list(get_active_question(test).values_list("id", flat=True))
     request.session["right_answers"] = 0
+
+
+def clear_session(request: HttpRequest):
+    del request.session["questions_id"]
+    del request.session["right_answers"]
