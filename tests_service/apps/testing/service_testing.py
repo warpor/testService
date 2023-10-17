@@ -19,3 +19,12 @@ def clear_session(request: HttpRequest):
 
 def get_active_question(test_objcet: Test):
     return test_objcet.question_set.filter(active=True)
+def get_info_about_attemps(right_answer: int,
+                           all_question_count: int) -> dict[str, int]:
+    test_info = {}
+    test_info["right_answer_percent"] \
+        = round((100 * (right_answer / all_question_count)), 2)
+    test_info["right_answers_count"] = right_answer
+    test_info["wrong_answers_count"] \
+        = all_question_count - right_answer
+    return test_info
