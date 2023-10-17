@@ -6,4 +6,8 @@ class Test(models.Model):
 
     def __str__(self):
         return self.title
+class Question(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    active = models.BooleanField()
+    question_text = models.TextField()
 # Create your models here.
