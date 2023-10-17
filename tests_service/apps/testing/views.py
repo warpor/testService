@@ -31,3 +31,5 @@ def sign_up(request: HttpRequest):
     return render(request, 'registration/register.html',
                   {"form": UserCreationForm()})
 # Create your views here.
+class ResultView(LoginRequiredMixin, TemplateView):
+    template_name = "testing/result.html"
