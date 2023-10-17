@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{question.question_text}}{% endblock title %}
+
+{% block content %}
+
+
+<form id="questionForm" action="{% url 'testing:attempt' test_id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ question.question_text }}</h1></legend>
+        {% for choice in question.choice_set.all %}
+        <input type="checkbox" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% endfor %}
+    </fieldset>
+    <input type="hidden" name="next" value="True">
+    <input type="submit" value="Next">
+</form>
+
+<br>
+
+<form action="{% url 'testing:attempt' test_id %}" method="post">
+    {% csrf_token %}
+    <input type='hidden' name='skip' value="True"/>
+    <input type="submit" value="Skip">
+</form>
+
+<br>
+
+<form action="{% url 'testing:attempt' test_id %}" method="post">
+    {% csrf_token %}
+    <input type='hidden' name='finish' value="True"/>
+    <input type="submit" value="Finish">
+</form>
+
+<script src="{% static 'checkbox_validate.js' %}"></script>
+
+{% endblock content%}
