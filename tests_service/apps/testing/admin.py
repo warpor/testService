@@ -44,5 +44,3 @@ class TestAdmin(nested_admin.NestedModelAdmin):
     ]
     inlines = [QuestionInline]
 
-admin.site.register(UserRightAnswer)
-# Register your models here.
