@@ -44,6 +44,27 @@ def sign_up(request: HttpRequest):
                       {"form": form})
     return render(request, 'registration/register.html',
                   {"form": UserCreationForm()})
-# Create your views here.
+
+
+@login_required
+def question_answer(request: HttpRequest, test_id: int):
+    request.session.modified = True
+    if request.POST.get("new_session") == "True":
+        session_initialization(test_id, request)
+    elif request.POST.get("skip") == "True":  # If user press "skip"
+        skip_question(request)
+    elif request.POST.get("finish") == "True":
+        return finish_test(request, test_id)
+    elif request.POST.get("next") == "True":
+        print(request.session["questions_id"])
+        question_id = request.session["questions_id"].pop(0)
+        check_answers(request, question_id)
+        if len(request.session["questions_id"]) == 0:
+            return finish_test(request, test_id)
+    else:
+        return redirect("testing:welcome")
+    return get_new_page_with_question(request, test_id)
+
+
 class ResultView(LoginRequiredMixin, TemplateView):
     template_name = "testing/result.html"
