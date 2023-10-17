@@ -15,3 +15,7 @@ def session_initialization(test_id: int, request: HttpRequest):
 def clear_session(request: HttpRequest):
     del request.session["questions_id"]
     del request.session["right_answers"]
+
+
+def get_active_question(test_objcet: Test):
+    return test_objcet.question_set.filter(active=True)
