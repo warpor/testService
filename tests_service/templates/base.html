@@ -10,5 +10,13 @@
 <body>
 {% block content %}
 {% endblock content %}
+
+<form action="{% url 'testing:welcome' %}" method="GET">
+    <button>Test list</button>
+</form>
+
+<form action="{% url 'testing:logout' %}" method="GET">
+    <button>Logout</button>
+</form>
 </body>
 </html>
