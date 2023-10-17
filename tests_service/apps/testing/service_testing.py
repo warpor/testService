@@ -15,10 +15,29 @@ def session_initialization(test_id: int, request: HttpRequest):
 def clear_session(request: HttpRequest):
     del request.session["questions_id"]
     del request.session["right_answers"]
+def save_result(request: HttpRequest, test_id: int):
+    test = get_object_or_404(Test, pk=test_id)
+    user_attempt \
+        = UserRightAnswer(right_answer=request.session["right_answers"], date=timezone.now(),
+                          user=request.user, test=test)
+    user_attempt.save()
 
 
 def get_active_question(test_objcet: Test):
     return test_objcet.question_set.filter(active=True)
+
+
+def process_all_attempts(tests_history: list[UserRightAnswer], all_question_count: int):
+    info_about_prev_attempts = []
+    for each_test_history in tests_history:
+        test_info = get_info_about_attemps(each_test_history.right_answer,
+                                           all_question_count)
+        test_info["date"] = each_test_history.date
+        info_about_prev_attempts.append(test_info)
+
+    return info_about_prev_attempts
+
+
 def get_info_about_attemps(right_answer: int,
                            all_question_count: int) -> dict[str, int]:
     test_info = {}
