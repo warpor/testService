@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest
@@ -18,6 +19,19 @@ class WelcomeView(LoginRequiredMixin, ListView):
         return self.model.objects.filter(active=True)
 
 
+class InfoView(LoginRequiredMixin, DetailView):
+    model = Test
+    template_name = "testing/detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(InfoView, self).get_context_data(**kwargs)
+        right = (
+            UserRightAnswer.objects.
+            filter(user=self.request.user.id, test=self.kwargs["pk"]))
+        question_number = len(get_active_question(self.object))
+        context["history"] = process_all_attempts(right, question_number)
+        context["question_nums"] = [num for num in range(question_number)]
+        return context
 
 
 def sign_up(request: HttpRequest):

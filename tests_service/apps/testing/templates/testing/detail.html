@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{{test.title}} info{% endblock title %}
+
+{% block content %}
+<form action="{% url 'testing:attempt' test.id %}" method="POST">
+    {% csrf_token %}
+    <input type='hidden' name='new_session' value="True"/>
+    <button>Start test</button>
+</form>>
+Attempts history: <br/>
+{%if history%}
+{% for test_info in history%}
+<ul>
+    <li>{{test_info.date}}; wrong answers: {{test_info.wrong_answers_count}};
+        right_answers: {{test_info.right_answers_count}};
+        percent right answers: {{test_info.right_answer_percent}}%
+    </li>
+</ul>
+{% endfor %}
+{%else%}
+The test has not yet been passed
+{% endif %}
+{% endblock content%}
